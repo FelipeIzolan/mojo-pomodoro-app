@@ -1,0 +1,27 @@
+@font-face {
+    font-family: PTSans;
+    src: url("./fonts/sans.ttf");
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+    list-style: none;
+    user-select: none;
+}
+
+body{
+    width: 100%; 
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fc4e4e;
+    background-size: 400% 400%;
+    animation: gradient_bg 8s ease infinite;
+}
+
+input:focus{
+    outline: none;
+}
