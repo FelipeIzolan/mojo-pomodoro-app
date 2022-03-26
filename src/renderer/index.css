@@ -1,6 +1,6 @@
 @font-face {
     font-family: PTSans;
-    src: url("./fonts/sans.ttf");
+    src: url("./fonts/PT_sans.ttf");
 }
 
 *{
@@ -17,7 +17,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #fc4e4e;
+    background: #69cf7f;
     background-size: 400% 400%;
     animation: gradient_bg 8s ease infinite;
 }
