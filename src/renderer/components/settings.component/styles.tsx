@@ -45,6 +45,12 @@ const Container = styled.div<Props>`
     z-index: 1;
 
     label { margin: 4px; }
+    select {
+        width: 12vw;
+        background: none;
+        border: none;
+        color: #2e2828bb;
+    }
 `
 
 const Credits = styled.div`

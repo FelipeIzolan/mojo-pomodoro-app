@@ -52,12 +52,13 @@ const createWindow = async () => {
   };
 
   mainWindow = new BrowserWindow({
+    title: "Mojo",
     show: false,
     width: 512,
     height: 224,
     resizable: false,
     frame: false,
-    icon: getAssetPath('logo.png'),
+    icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,

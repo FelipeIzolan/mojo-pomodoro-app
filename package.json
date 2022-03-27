@@ -31,8 +31,7 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Mojo",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
