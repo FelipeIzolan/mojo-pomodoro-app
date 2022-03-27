@@ -4,7 +4,7 @@ const Container = styled.ul`
     flex-direction: row-reverse;
     position: absolute;
     top: 0; right: 0;
-    background: #79e791;
+    background: ${props => props.theme.titlebar};
     padding: 4px;
     display: flex;
     width: 100%;
@@ -18,10 +18,9 @@ const Container = styled.ul`
         transition: 0.2s;
     }
 
-    li:nth-child(1){ background: #f14f4f; }
-    li:nth-child(2){ background: #2bcd63; }
-    li:nth-child(1):hover{ background: #ff6363; }
-    li:nth-child(2):hover{ background: #3cfc7f; }
+    li:nth-child(1){ background: #ee5a5a; }
+    li:nth-child(2){ background: #80ee67; }
+
 `
 
 const DragContainer = styled.div`

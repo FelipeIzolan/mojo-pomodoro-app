@@ -17,11 +17,9 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #69cf7f;
-    background-size: 400% 400%;
-    animation: gradient_bg 8s ease infinite;
+    overflow: hidden;
 }
 
-input:focus{
-    outline: none;
-}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input:focus{ outline: none; }

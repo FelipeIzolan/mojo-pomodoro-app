@@ -23,7 +23,7 @@ const Container = styled.div<ContainerProps>`
     input{ border-top-left-radius: 6px; }
     button{ border-bottom-right-radius: 6px; cursor: pointer; }
 
-    input::placeholder{ color: white; opacity: 0.6;}
+    input::placeholder{ color: #ffffff96;}
 `
 
 export { Container }
