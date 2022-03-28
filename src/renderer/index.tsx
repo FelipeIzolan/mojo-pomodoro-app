@@ -13,13 +13,15 @@ import { themes, BodyColor } from "content"
 import "./index.css"
 
 const App: React.FC = () => {
-  const [theme, setTheme] = useState(getLocalStorage("theme"))
+  const [theme, setTheme] = useState<string>(getLocalStorage("theme"))
+  const [workTime, setWorkTime] = useState<number>(getLocalStorage("workTime"))
+  const [restTime, setRestTime] = useState<number>(getLocalStorage("restTime"))
 
   return (
     <ThemeProvider theme={getProperty(themes, theme)}>
       <BodyColor/>
       <Titlebar />
-      <Settings theme={[theme, setTheme]} />
+      <Settings theme={[theme, setTheme]} restTime={[restTime, setRestTime]} workTime={[workTime, setWorkTime]} />
       <div>
         <Logo />
         <Inputs />

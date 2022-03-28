@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Container } from "./styles"
+import React, { useState } from 'react';
+import { Container } from './styles';
 
 const Inputs: React.FC = () => {
     const [text, setText] = useState<string>("")

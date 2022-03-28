@@ -46,10 +46,23 @@ const Container = styled.div<Props>`
 
     label { margin: 4px; }
     select {
-        width: 12vw;
-        background: none;
+        background: #ffffff40;
+        border-radius: 2px;
         border: none;
-        color: #2e2828bb;
+    }
+`
+
+const InputContainer = styled.div`
+    margin: 4px;
+
+    input[type="number"]{
+        margin: 2px;
+        padding: 2px 5px 2px 5px;
+        width: 58.75px;
+        background: #ffffff40;
+        border-radius: 2px;
+        border: none;
+        color: white;
     }
 `
 
@@ -62,4 +75,12 @@ const Credits = styled.div`
     i { cursor: pointer; }
 `
 
-export { Button, Background, Container, Credits }
+const Version = styled.span`
+    position: absolute;
+    bottom: -2px;
+    right: 0;
+    margin: 4px 20px 4px 4px;
+    font-size: x-small;
+`
+
+export { Button, Background, Container, Credits, Version, InputContainer }

@@ -1,7 +1,8 @@
 if(localStorage.length === 0){
     let template = {
-        theme: "purpleman",
-        timer: { restTime: 15, workTime: 45 }
+        theme: "tomato",
+        workTime: 45,
+        restTime: 15
     }
 
     Object.entries(template).forEach(currValue => {

@@ -1,10 +1,11 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, shell, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
+import { getVersion } from './util'
 
 export default class AppUpdater {
   constructor() {
@@ -14,7 +15,10 @@ export default class AppUpdater {
   }
 }
 
-let mainWindow: BrowserWindow | null = null;
+let mainWindow: BrowserWindow | null = null
+let tray: Tray | null
+let isActive: boolean = false
+let timer: NodeJS.Timeout | null
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -40,16 +44,16 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
+const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../../assets');
+
+const getAssetPath = (...paths: string[]): string => {
+  return path.join(RESOURCES_PATH, ...paths);
+};
+
 const createWindow = async () => {
   if (isDevelopment) await installExtensions();
-
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
 
   mainWindow = new BrowserWindow({
     title: "Mojo",
@@ -71,14 +75,22 @@ const createWindow = async () => {
   mainWindow.loadURL(resolveHtmlPath('index.html'));
   mainWindow.removeMenu()
 
+  mainWindow.on('closed', () => mainWindow = null);
+  // minimize with tray if is active !!!!!!!!!!
+  mainWindow.on("restore", () => { tray?.destroy(); tray = null })
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) throw new Error('"mainWindow" is not defined');
-  
+    
     if (process.env.START_MINIMIZED) mainWindow.minimize();
     else mainWindow.show();
   });
-
-  mainWindow.on('closed', () => mainWindow = null);
+  
+  mainWindow.on("minimize", () => {
+    if(isActive){
+      tray = createTray(); 
+      mainWindow?.hide();
+    }
+  })
 
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
@@ -87,21 +99,48 @@ const createWindow = async () => {
   });
 };
 
+const createTray = () => {
+  let tray = new Tray(getAssetPath("icon.png"))
+  const contextMenu = Menu.buildFromTemplate([
+    { label: "Open", click: () => mainWindow?.show() },
+    { label: "Close", click: () => app.quit() }
+  ])
+
+  tray.setToolTip("Mojo")
+  tray.setContextMenu(contextMenu)
+  tray.on("double-click", () => mainWindow?.show())
+
+  return tray
+}
+
 ipcMain.on("close", () => mainWindow?.close())
 ipcMain.on("minimize", () => mainWindow?.minimize())
+ipcMain.handle("version", () => getVersion())
+
+ipcMain.on("start", (e, timer) => {
+  e.preventDefault()
+
+  const { restTime, workTime } = timer
+  isActive = true
+
+  timer = setTimeout(() => {
+    clearTimeout(timer)
+    // ... CONTINUE HERE
+  }, workTime * 60000)
+
+})
+
+ipcMain.on("stop", () => timer ? clearTimeout(timer) : null)
 
 app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  if (process.platform !== 'darwin') { app.quit(); }
 });
 
 app
   .whenReady()
   .then(() => {
     createWindow();
+    mainWindow?.maximize();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
