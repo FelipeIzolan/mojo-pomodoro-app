@@ -5,8 +5,7 @@ import { getLocalStorage } from "./scripts/localStorage";
 import getProperty from "./scripts/getProperty";
 
 import Titlebar from "./components/titlebar.component"
-import Logo from "./components/logo.component"
-import Inputs from "./components/inputs.component"
+import Interface from "./components/interface.component"
 import Settings from "./components/settings.component"
 
 import { themes, BodyColor } from "content"
@@ -23,8 +22,7 @@ const App: React.FC = () => {
       <Titlebar />
       <Settings theme={[theme, setTheme]} restTime={[restTime, setRestTime]} workTime={[workTime, setWorkTime]} />
       <div>
-        <Logo />
-        <Inputs />
+        <Interface />
       </div>
     </ThemeProvider>
   )

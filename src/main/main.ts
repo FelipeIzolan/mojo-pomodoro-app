@@ -58,7 +58,7 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     title: "Mojo",
     show: false,
-    width: 512,
+    width: 352,
     height: 224,
     resizable: false,
     frame: false,
@@ -75,22 +75,17 @@ const createWindow = async () => {
   mainWindow.loadURL(resolveHtmlPath('index.html'));
   mainWindow.removeMenu()
 
+  mainWindow.on("show", () => { tray?.destroy(); tray = null })
+  mainWindow.on("hide", () => tray = createTray())
+
   mainWindow.on('closed', () => mainWindow = null);
-  // minimize with tray if is active !!!!!!!!!!
-  mainWindow.on("restore", () => { tray?.destroy(); tray = null })
+  mainWindow.on("minimize", () => isActive ? (mainWindow?.hide()) : null)
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) throw new Error('"mainWindow" is not defined');
-    
+
     if (process.env.START_MINIMIZED) mainWindow.minimize();
     else mainWindow.show();
   });
-  
-  mainWindow.on("minimize", () => {
-    if(isActive){
-      tray = createTray(); 
-      mainWindow?.hide();
-    }
-  })
 
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
@@ -120,17 +115,23 @@ ipcMain.handle("version", () => getVersion())
 ipcMain.on("start", (e, timer) => {
   e.preventDefault()
 
-  const { restTime, workTime } = timer
+  // const { restTime, workTime } = timer
   isActive = true
+  mainWindow?.hide()
+  ipcMain.emit("workTime")
 
   timer = setTimeout(() => {
-    clearTimeout(timer)
-    // ... CONTINUE HERE
-  }, workTime * 60000)
-
+    mainWindow?.show()
+    ipcMain.emit("restTime")
+  }, 8000)
 })
 
-ipcMain.on("stop", () => timer ? clearTimeout(timer) : null)
+ipcMain.on("stop", () => {
+  isActive = false
+  timer ? clearTimeout(timer) : null
+  tray?.destroy()
+  tray = null
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') { app.quit(); }
