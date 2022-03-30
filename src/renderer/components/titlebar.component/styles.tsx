@@ -29,7 +29,7 @@ const DragContainer = styled.div`
     top: 0; left: 0;
     height: 16px;
     z-index: 1;
-    width: 93%;
+    width: 90%;
 `
 
 export { Container, DragContainer }

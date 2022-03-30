@@ -112,23 +112,27 @@ ipcMain.on("close", () => mainWindow?.close())
 ipcMain.on("minimize", () => mainWindow?.minimize())
 ipcMain.handle("version", () => getVersion())
 
-ipcMain.on("start", (e, timer) => {
+ipcMain.on("start", (e, times) => {
   e.preventDefault()
 
   // const { restTime, workTime } = timer
   isActive = true
   mainWindow?.hide()
-  ipcMain.emit("workTime")
+  mainWindow?.webContents.send("workTime")
 
   timer = setTimeout(() => {
     mainWindow?.show()
-    ipcMain.emit("restTime")
+    mainWindow?.webContents.send("restTime")
+
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => mainWindow?.webContents.send("endTime"), 2000)
   }, 8000)
 })
 
 ipcMain.on("stop", () => {
+  if (timer) clearTimeout(timer)
+  timer = null
   isActive = false
-  timer ? clearTimeout(timer) : null
   tray?.destroy()
   tray = null
 })
