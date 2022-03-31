@@ -58,7 +58,7 @@ const Settings: React.FC<Props> = (props) => {
                         />
                         <input
                             type="number"
-                            placeholder="rest"
+                            placeholder="work"
                             onChange={(e) => setWorkTime(e.target.valueAsNumber)}
                             value={workTime}
                         />
