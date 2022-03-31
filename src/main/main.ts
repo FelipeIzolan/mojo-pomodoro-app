@@ -52,6 +52,14 @@ const getAssetPath = (...paths: string[]): string => {
   return path.join(RESOURCES_PATH, ...paths);
 };
 
+const reset = () => {
+  if (timer) clearTimeout(timer)
+  timer = null
+  isActive = false
+  tray?.destroy()
+  tray = null
+}
+
 const createWindow = async () => {
   if (isDevelopment) await installExtensions();
 
@@ -115,7 +123,7 @@ ipcMain.handle("version", () => getVersion())
 ipcMain.on("start", (e, times) => {
   e.preventDefault()
 
-  // const { restTime, workTime } = timer
+  const { restTime, workTime } = times
   isActive = true
   mainWindow?.hide()
   mainWindow?.webContents.send("workTime")
@@ -123,19 +131,17 @@ ipcMain.on("start", (e, times) => {
   timer = setTimeout(() => {
     mainWindow?.show()
     mainWindow?.webContents.send("restTime")
-
     if (timer) clearTimeout(timer)
-    timer = setTimeout(() => mainWindow?.webContents.send("endTime"), 2000)
-  }, 8000)
+
+    timer = setTimeout(() => {
+      mainWindow?.show()
+      mainWindow?.webContents.send("endTime")
+      reset()
+    }, restTime * 60000) // restTime
+  }, workTime * 60000) // workTime
 })
 
-ipcMain.on("stop", () => {
-  if (timer) clearTimeout(timer)
-  timer = null
-  isActive = false
-  tray?.destroy()
-  tray = null
-})
+ipcMain.on("stop", () => reset())
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') { app.quit(); }

@@ -14,15 +14,15 @@ import "./index.css"
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState<string>(getLocalStorage("theme"))
-  const [timerState, setTimerState] = useState<string>("START")
+  const [timerState, setTimerState] = useState<string>("NORMAL")
 
   const [workTime, setWorkTime] = useState<number>(getLocalStorage("workTime"))
   const [restTime, setRestTime] = useState<number>(getLocalStorage("restTime"))
 
   useEffect(() => {
-    ipcRenderer.on("workTime", () => { console.log("workTime") })
-    ipcRenderer.on("restTime", () => { console.log("restTime") })
-    ipcRenderer.on("endTime", () => { console.log("endTime") })
+    ipcRenderer.on("workTime", () => setTimerState("WORK"))
+    ipcRenderer.on("restTime", () => setTimerState("REST"))
+    ipcRenderer.on("endTime", () => setTimerState("NORMAL"))
   }, [])
 
   return (
