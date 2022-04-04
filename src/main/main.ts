@@ -58,6 +58,7 @@ const reset = () => {
   isActive = false
   tray?.destroy()
   tray = null
+  mainWindow?.webContents.send("endTime")
 }
 
 const createWindow = async () => {
@@ -120,6 +121,7 @@ ipcMain.on("close", () => mainWindow?.close())
 ipcMain.on("minimize", () => mainWindow?.minimize())
 ipcMain.handle("version", () => getVersion())
 
+ipcMain.on("stop", () => reset())
 ipcMain.on("start", (e, times) => {
   e.preventDefault()
 
@@ -135,13 +137,10 @@ ipcMain.on("start", (e, times) => {
 
     timer = setTimeout(() => {
       mainWindow?.show()
-      mainWindow?.webContents.send("endTime")
       reset()
     }, restTime * 60000) // restTime
   }, workTime * 60000) // workTime
 })
-
-ipcMain.on("stop", () => reset())
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') { app.quit(); }

@@ -20,9 +20,11 @@ const App: React.FC = () => {
   const [restTime, setRestTime] = useState<number>(getLocalStorage("restTime"))
 
   useEffect(() => {
-    ipcRenderer.on("workTime", () => setTimerState("WORK"))
-    ipcRenderer.on("restTime", () => setTimerState("REST"))
-    ipcRenderer.on("endTime", () => setTimerState("NORMAL"))
+    const beep = new Audio("https://opengameart.org/sites/default/files/alarm.ogg")
+
+    ipcRenderer.on("workTime", () => { setTimerState("WORK"); beep.play() })
+    ipcRenderer.on("restTime", () => { setTimerState("REST"); beep.play() })
+    ipcRenderer.on("endTime", () => { setTimerState("NORMAL"); beep.play() })
   }, [])
 
   return (
