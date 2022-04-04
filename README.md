@@ -10,6 +10,6 @@ Mojo is a pomodoro app built with electron using electron-react-boilerplate.
 
 ## Credits
 
-- Logo icon created by Rudiyana - Flaticon\
-- Settings icon created by Pixel perfect - Flaticon\
+- Logo icon created by Rudiyana - Flaticon
+- Settings icon created by Pixel perfect - Flaticon
 - Beep sound created by yd - opengameart
