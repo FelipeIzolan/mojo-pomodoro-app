@@ -9,7 +9,7 @@ import Titlebar from "./components/titlebar.component"
 import Interface from "./components/interface.component"
 import Settings from "./components/settings.component"
 
-import { themes, BodyColor } from "content"
+import { themes, BodyColor } from "./content"
 import "./index.css"
 
 const App: React.FC = () => {
