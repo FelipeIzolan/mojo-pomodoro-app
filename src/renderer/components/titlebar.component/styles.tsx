@@ -8,18 +8,19 @@ const Container = styled.ul`
     padding: 4px;
     display: flex;
     width: 100%;
+    z-index: 2;
 
     li{
         display: inline-block;
-        margin-right: 6px;
+        margin-right: 5px;
         width: 8px;
         height: 8px;
         border-radius: 50%;
         transition: 0.2s;
     }
 
-    li:nth-child(1){ background: #ee5a5a; }
-    li:nth-child(2){ background: #80ee67; }
+    li:nth-child(1){ background: #FF7096; }
+    li:nth-child(2){ background: #86FFBC; }
 
 `
 
@@ -28,8 +29,7 @@ const DragContainer = styled.div`
     position: absolute;
     top: 0; left: 0;
     height: 16px;
-    z-index: 1;
-    width: 90%;
+    width: 86%;
 `
 
 export { Container, DragContainer }

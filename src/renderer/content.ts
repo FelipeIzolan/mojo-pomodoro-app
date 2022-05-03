@@ -8,17 +8,15 @@ interface Props {
 }
 
 const themes = {
-    purpleman: { titlebar: "#533e85", body: "#2f244c" },
-    greenfield: { titlebar: "#a2d5ab", body: "#85c88a" },
-    dark: { titlebar: "#2b2b2b", body: "#151515" },
-    candy: { titlebar: "#fad9e6", body: "#e4aec5" },
-    tomato: { titlebar: "#cd1818", body: "#ff5959" }
+    purpleman: { titlebar: "#55359C", body: "#3A2569" },
+    greenfield: { titlebar: "#ACE9A9", body: "#9CD999" },
+    dark: { titlebar: "#2B2B2B", body: "#1E1E1E" },
+    candy: { titlebar: "#fAD9E6", body: "#F9C0D8" },
+    tomato: { titlebar: "#D5416A", body: "#F67297" }
 }
 
 const BodyColor = createGlobalStyle`
-    body {
-        background: ${(props: Props) => props.theme.body}
-    }
+    body { background: ${(props: Props) => props.theme.body }
 `
 
 export { themes, BodyColor }

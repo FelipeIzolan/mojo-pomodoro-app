@@ -7,7 +7,8 @@ const Container = styled.div`
     justify-content: center;
     margin-top: 4px;
 
-    img { width: 16vw; }
+    img { width: 58px; }
+
     h1 { 
         color: white; 
         font-family: PTSans;
@@ -17,18 +18,17 @@ const Container = styled.div`
 `
 
 const Button = styled.button`
+    padding: 2px 14px 2px 14px;
+    margin-top: 6px;
     background: none;
-    border: 1px solid white;
-    color: white;
-    padding: 2px 8px;
-    margin-top: 8px;
+    border: solid 1px white;
+    transition: 0.4s;
+    border-radius: 4px;
     cursor: pointer;
-    transition: 0.2s;
+    color: white;
+    width: 42px;
 
-    :hover{
-        border-top-left-radius: 4px;
-        border-bottom-right-radius: 4px;
-    }
+    :hover { background: #FFFFFF36; }
 `
 
 export { Container, Button }

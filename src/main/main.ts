@@ -61,14 +61,28 @@ const reset = () => {
   mainWindow?.webContents.send("endTime")
 }
 
+const createTray = () => {
+  let tray = new Tray(getAssetPath("icon.png"))
+  const contextMenu = Menu.buildFromTemplate([
+    { label: "Open", click: () => mainWindow?.show() },
+    { label: "Close", click: () => app.quit() }
+  ])
+
+  tray.setToolTip("Mojo")
+  tray.setContextMenu(contextMenu)
+  tray.on("double-click", () => mainWindow?.show())
+
+  return tray
+}
+
 const createWindow = async () => {
   if (isDevelopment) await installExtensions();
 
   mainWindow = new BrowserWindow({
     title: "Mojo",
     show: false,
-    width: 352,
-    height: 224,
+    width: 235,
+    height: 150,
     resizable: false,
     frame: false,
     icon: getAssetPath('icon.png'),
@@ -84,11 +98,14 @@ const createWindow = async () => {
   mainWindow.loadURL(resolveHtmlPath('index.html'));
   mainWindow.removeMenu()
 
+  // tray managment
   mainWindow.on("show", () => { tray?.destroy(); tray = null })
   mainWindow.on("hide", () => tray = createTray())
 
+  // close / minimize managment
   mainWindow.on('closed', () => mainWindow = null);
   mainWindow.on("minimize", () => isActive ? (mainWindow?.hide()) : null)
+
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) throw new Error('"mainWindow" is not defined');
 
@@ -102,20 +119,6 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 };
-
-const createTray = () => {
-  let tray = new Tray(getAssetPath("icon.png"))
-  const contextMenu = Menu.buildFromTemplate([
-    { label: "Open", click: () => mainWindow?.show() },
-    { label: "Close", click: () => app.quit() }
-  ])
-
-  tray.setToolTip("Mojo")
-  tray.setContextMenu(contextMenu)
-  tray.on("double-click", () => mainWindow?.show())
-
-  return tray
-}
 
 ipcMain.on("close", () => mainWindow?.close())
 ipcMain.on("minimize", () => mainWindow?.minimize())
