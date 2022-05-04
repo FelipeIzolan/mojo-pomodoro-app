@@ -80,12 +80,10 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     title: "Mojo",
-    show: false,
     width: 235,
     height: 150,
     resizable: false,
     frame: false,
-    maximizable: false,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
@@ -154,7 +152,6 @@ app
   .whenReady()
   .then(() => {
     createWindow();
-    mainWindow?.maximize();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
