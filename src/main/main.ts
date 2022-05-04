@@ -85,6 +85,7 @@ const createWindow = async () => {
     height: 150,
     resizable: false,
     frame: false,
+    maximizable: false,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
@@ -95,7 +96,7 @@ const createWindow = async () => {
     }
   });
 
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  mainWindow.loadURL(resolveHtmlPath('index.html'))
   mainWindow.removeMenu()
 
   // tray managment

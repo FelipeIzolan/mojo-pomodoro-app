@@ -8,7 +8,8 @@ import openTab from "renderer/scripts/openTab";
 interface Props {
     theme: [string, React.Dispatch<string>],
     restTime: [number, React.Dispatch<number>],
-    workTime: [number, React.Dispatch<number>]
+    workTime: [number, React.Dispatch<number>],
+    timerState: string
 }
 
 const Settings: React.FC<Props> = (props) => {
@@ -18,10 +19,9 @@ const Settings: React.FC<Props> = (props) => {
     const [theme, setTheme] = props.theme
     const [workTime, setWorkTime] = props.workTime
     const [restTime, setRestTime] = props.restTime
+    const timerState = props.timerState
 
-    useEffect(() => {
-        setLocalStorage("theme", theme)
-    }, [theme])
+    useEffect(() => setLocalStorage("theme", theme), [theme])
 
     useEffect(() => {
         ipcRenderer.invoke("version")
@@ -35,7 +35,7 @@ const Settings: React.FC<Props> = (props) => {
 
     return (
         <>
-            <Button onClick={() => isOpen ? setIsOpen(false) : setIsOpen(true)} />
+            <Button onClick={() => !isOpen && timerState === "NORMAL" ? setIsOpen(true) : setIsOpen(false)} />
             <Background isOpen={isOpen}>
                 <Container isOpen={isOpen}>
                     <div>
@@ -51,15 +51,17 @@ const Settings: React.FC<Props> = (props) => {
                     <InputContainer>
                         <label>Time: </label><br />
                         <input
+                            min={1}
                             type="number"
                             placeholder="rest"
-                            onChange={(e) => setRestTime(e.target.valueAsNumber)}
+                            onChange={(e) => setRestTime(e.target.valueAsNumber || 0)}
                             value={restTime}
                         />
                         <input
+                            min={1}
                             type="number"
                             placeholder="work"
-                            onChange={(e) => setWorkTime(e.target.valueAsNumber)}
+                            onChange={(e) => setWorkTime(e.target.valueAsNumber || 0)}
                             value={workTime}
                         />
                     </InputContainer>

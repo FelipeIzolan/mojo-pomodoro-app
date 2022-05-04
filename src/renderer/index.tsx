@@ -31,6 +31,7 @@ const App: React.FC = () => {
       <BodyColor />
       <Titlebar />
       <Settings
+        timerState={timerState}
         theme={[theme, setTheme]}
         restTime={[restTime, setRestTime]}
         workTime={[workTime, setWorkTime]}

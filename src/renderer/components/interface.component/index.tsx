@@ -11,24 +11,58 @@ interface Props {
     restTime: number
 }
 
+let clockInterval: NodeJS.Timer | undefined
+
 const Interface: React.FC<Props> = (props) => {
-    const [buttonText, setButtonText] = useState<string>("START")
+    const [buttonText, setButtonText] = useState("START")
     const [iconSrc, setIconSrc] = useState(icon)
     const [timerState, setTimerState] = props.timerState
+
     const workTime = props.workTime
     const restTime = props.restTime
+    const [clock, setClock] = useState({ minutes: workTime, seconds: 0 })
+
+    useEffect(() => setClock({ minutes: workTime, seconds: 0 }), [workTime])
 
     useEffect(() => {
         switch (timerState) {
             case "NORMAL":
+                setClock({ minutes: workTime, seconds: 0 })
+                if (clockInterval) clearInterval(clockInterval)
                 setIconSrc(icon)
                 setButtonText("START")
                 break
             case "WORK":
+                setClock({ minutes: workTime, seconds: 0 })
+                if (clockInterval) clearInterval(clockInterval)
+                clockInterval = setInterval(() => {
+                    setClock(state => {
+                        let temp = { ...state }
+                        temp.seconds === 0 ?
+                            (temp.seconds = 59, temp.minutes--) :
+                            temp.seconds--
+
+                        return temp
+                    })
+                }, 1000)
+
                 setIconSrc(icon_work)
                 setButtonText("STOP")
                 break
             case "REST":
+                setClock({ minutes: restTime, seconds: 0 })
+                if (clockInterval) clearInterval(clockInterval)
+                clockInterval = setInterval(() => {
+                    setClock(state => {
+                        let temp = { ...state }
+                        temp.seconds === 0 ?
+                            (temp.seconds = 59, temp.minutes--) :
+                            temp.seconds--
+
+                        return temp
+                    })
+                }, 1000)
+
                 setIconSrc(icon_rest)
                 setButtonText("STOP")
                 break
@@ -38,10 +72,8 @@ const Interface: React.FC<Props> = (props) => {
 
     return (
         <Container>
-            <img
-                src={iconSrc}
-                draggable={false}
-            />
+            <img src={iconSrc} draggable={false} />
+            <span>{clock.minutes} : {clock.seconds}</span>
             <Button
                 onClick={
                     function () {

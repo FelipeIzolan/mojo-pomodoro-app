@@ -16,7 +16,9 @@ const themes = {
 }
 
 const BodyColor = createGlobalStyle`
-    body { background: ${(props: Props) => props.theme.body }
+    body {
+        background: ${(props: Props) => props.theme.body}
+    }
 `
 
 export { themes, BodyColor }
